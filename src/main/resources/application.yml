@@ -34,4 +34,7 @@ spring:
       web:
         exposure:
           include: "*"
+authorization:
+  jwt:
+    secret-key: ${SECRET_KEY:secret}
 

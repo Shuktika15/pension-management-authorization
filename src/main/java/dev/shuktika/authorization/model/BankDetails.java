@@ -5,11 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class JWTResponse {
-    private String accessToken;
-    private Long aadharNumber;
+public class BankDetails {
+    private String bankName;
+    private Long accountNumber;
+    private String bankType;
 }

@@ -1,9 +1,14 @@
 package dev.shuktika.authorization.service;
 
-import dev.shuktika.authorization.model.JWTResponse;
+import dev.shuktika.authorization.client.PensionerClient;
+import dev.shuktika.authorization.entity.Pensioner;
+import dev.shuktika.authorization.exception.AadharMismatchException;
+import dev.shuktika.authorization.exception.PensionerDetailServiceException;
+import dev.shuktika.authorization.model.PensionerDetails;
 import dev.shuktika.authorization.repository.PensionerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +27,14 @@ import javax.transaction.Transactional;
 public class PensionerService implements UserDetailsService {
     private final PensionerRepository pensionerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PensionerClient pensionerClient;
 
-    public JWTResponse getPensioner() {
+    public Pensioner addPensioner(Pensioner pensioner) {
+        pensioner.setPassword(passwordEncoder.encode(pensioner.getPassword()));
+        return pensionerRepository.save(pensioner);
+    }
+
+    public PensionerDetails getPensioner() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
 
@@ -37,9 +50,19 @@ public class PensionerService implements UserDetailsService {
                     log.error(errorMsg);
                     return new UsernameNotFoundException(errorMsg);
                 });
-        return JWTResponse.builder()
-                .aadharNumber(pensioner.getAadharNumber())
-                .build();
+        Long aadharNumber = pensioner.getAadharNumber();
+        ResponseEntity<PensionerDetails> pensionerResponseEntity = pensionerClient.getPensioner(aadharNumber);
+        PensionerDetails pensionerDetails = null;
+
+        if (pensionerResponseEntity.getStatusCode().is2xxSuccessful() && pensionerResponseEntity.hasBody()) {
+            pensionerDetails = pensionerResponseEntity.getBody();
+        } else if (pensionerResponseEntity.getStatusCode().is4xxClientError()) {
+            throw new AadharMismatchException(String.format("Aadhar number %s not found", aadharNumber));
+        } else if (pensionerResponseEntity.getStatusCode().is5xxServerError()) {
+            throw new PensionerDetailServiceException("Pensioner Detail Service internal server error");
+        }
+
+        return pensionerDetails;
     }
 
     @Override
@@ -51,4 +74,11 @@ public class PensionerService implements UserDetailsService {
         });
     }
 
+    public List<Pensioner> addPensioners(List<Pensioner> pensioners) {
+        return pensionerRepository.saveAllAndFlush(
+                pensioners.stream()
+                        .peek(pensioner -> pensioner.setPassword(passwordEncoder.encode(pensioner.getPassword())))
+                        .collect(Collectors.toList())
+        );
+    }
 }

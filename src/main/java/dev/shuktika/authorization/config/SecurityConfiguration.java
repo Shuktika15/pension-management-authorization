@@ -20,10 +20,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private static final String[] AUTH_WHITELIST = {
-            "/authorization/api/login",
-    };
-    private static final String LOGIN_URL = "/authorization/api/login";
+    private static final String LOGIN_URL = "/authorization/login";
     private final PensionerService pensionerService;
     private final PasswordEncoder passwordEncoder;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
@@ -54,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(AUTH_WHITELIST)
+                .antMatchers(propertyValuesConfiguration.getAuthWhitelistAsStringArray())
                 .permitAll()
                 .anyRequest()
                 .authenticated()

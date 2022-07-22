@@ -24,10 +24,6 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthorizationFilter extends OncePerRequestFilter {
-
-    private static final String[] AUTH_WHITELIST = {
-            "/authorization/api/login"
-    };
     private final PropertyValuesConfiguration propertyValuesConfiguration;
 
     @Override
@@ -40,14 +36,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         String requestUrl = request.getServletPath();
-        boolean whiteListedRequest = false;
-
-        for (String url : AUTH_WHITELIST) {
-            if (requestUrl.startsWith(url)) {
-                whiteListedRequest = true;
-                break;
-            }
-        }
+        boolean whiteListedRequest = propertyValuesConfiguration.isWhiteListed(requestUrl);
 
         if (!whiteListedRequest) {
             String token = request.getHeader(HttpHeaders.AUTHORIZATION);

@@ -1,8 +1,10 @@
 package dev.shuktika.authorization.controller;
 
 
+import dev.shuktika.authorization.exception.AadharMismatchException;
 import dev.shuktika.authorization.exception.BadRequestException;
 import dev.shuktika.authorization.exception.InvalidJWTException;
+import dev.shuktika.authorization.exception.PensionerDetailServiceException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,18 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<Error> handleEntityNotFoundException(EntityNotFoundException e) {
         return new ResponseEntity<>(new Error(e.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AadharMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Error> handleAadharMismatchException(AadharMismatchException e) {
+        return new ResponseEntity<>(new Error(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PensionerDetailServiceException.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ResponseEntity<Error> handlePensionerDetailServiceException(PensionerDetailServiceException e) {
+        return new ResponseEntity<>(new Error(e.getMessage()), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @ExceptionHandler(Exception.class)

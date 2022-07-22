@@ -1,0 +1,99 @@
+### Post
+POST http://localhost:8002/authorization/login
+Content-Type: application/x-www-form-urlencoded
+
+aadharNumber=234151234234&password=Jhinuk@151
+
+### Get
+GET http://localhost:8002/authorization/authenticate
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzQxNTEyMzQyMzQiLCJleHAiOjE2NTg1MTI5NzYsImlhdCI6MTY1ODUxMTE3Nn0.53DqAmLVhX4em1dKCCndFXmOwnfYalug7u-zF-qbYRRdBl6JO10ADX_2hNNpYcavmDJsA51FiQCfOS1fiwpr2g
+
+### Post Pensioners
+POST http://localhost:8002/authorization/pensioners
+Content-Type: application/json
+Accept: application/json
+
+[
+  {
+    "aadharNumber": 234151234234,
+    "password": "Jhinuk@151"
+  },
+  {
+    "aadharNumber": 124151234248,
+    "password": "Jhinuk@152"
+  },
+  {
+    "aadharNumber": 123451234247,
+    "password": "Jhinuk@153"
+  },
+  {
+    "aadharNumber": 123415134236,
+    "password": "Jhinuk@154"
+  },
+  {
+    "aadharNumber": 123415124249,
+    "password": "Jhinuk@155"
+  },
+  {
+    "aadharNumber": 123415123451,
+    "password": "Jhinuk@157"
+  },
+  {
+    "aadharNumber": 123415123442,
+    "password": "Jhinuk@158"
+  },
+  {
+    "aadharNumber": 123415123440,
+    "password": "Jhinuk@159"
+  },
+  {
+    "aadharNumber": 123415123438,
+    "password": "Jhinuk@150"
+  },
+  {
+    "aadharNumber": 123415123435,
+    "password": "Jhinuk@15"
+  },
+  {
+    "aadharNumber": 123415123425,
+    "password": "Jhinuk@1511"
+  },
+  {
+    "aadharNumber": 123415123252,
+    "password": "Jhinuk@1522"
+  },
+  {
+    "aadharNumber": 123415123250,
+    "password": "Jhinuk@1533"
+  },
+  {
+    "aadharNumber": 123415123244,
+    "password": "Jhinuk@1544"
+  },
+  {
+    "aadharNumber": 123415124241,
+    "password": "Jhinuk@156"
+  },
+  {
+    "aadharNumber": 123415123239,
+    "password": "Jhinuk@1555"
+  },
+  {
+    "aadharNumber": 123415123237,
+    "password": "Jhinuk@1566"
+  },
+  {
+    "aadharNumber": 123411234246,
+    "password": "Jhinuk@1577"
+  },
+  {
+    "aadharNumber": 123411234245,
+    "password": "Jhinuk@1588"
+  },
+  {
+    "aadharNumber": 123411234243,
+    "password": "Jhinuk@1599"
+  }
+]
+

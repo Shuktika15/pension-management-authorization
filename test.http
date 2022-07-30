@@ -1,13 +1,13 @@
 ### Post
-POST http://localhost:8002/authorization/login
+POST http://localhost:8181/authorization/login
 Content-Type: application/x-www-form-urlencoded
 
 aadharNumber=234151234234&password=Jhinuk@151
 
 ### Get
-GET http://localhost:8002/authorization/authenticate
+GET http://localhost:8181/authorization/authenticate
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzQxNTEyMzQyMzQiLCJleHAiOjE2NTg1MTI5NzYsImlhdCI6MTY1ODUxMTE3Nn0.53DqAmLVhX4em1dKCCndFXmOwnfYalug7u-zF-qbYRRdBl6JO10ADX_2hNNpYcavmDJsA51FiQCfOS1fiwpr2g
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzQxNTEyMzQyMzQiLCJleHAiOjE2NTkwMTk1MjUsImlhdCI6MTY1OTAxNzcyNX0.JbvZ0-yBaiHrPSQrKs3Oyv58wIxmZ87t5mk1cQFJreUwDFCAZigeysFyqJG1UDhI8s2YJAHadsvtQyrDvTkDDw
 
 ### Post Pensioners
 POST http://localhost:8002/authorization/pensioners

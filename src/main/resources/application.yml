@@ -38,6 +38,15 @@ authorization:
   jwt:
     secret-key: ${SECRET_KEY:secret}
   auth-whitelist:
+    - "/v2/api-docs"
+    - "/swagger-resources"
+    - "/swagger-resources/**"
+    - "/configuration/ui"
+    - "/configuration/security"
+    - "/swagger-ui.html"
+    - "/webjars/**"
+    - "/v3/api-docs/**"
+    - "/swagger-ui/**"
     - "/authorization/login"
     - "/authorization/pensioner"
 

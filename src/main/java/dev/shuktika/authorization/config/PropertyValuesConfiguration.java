@@ -23,6 +23,22 @@ public class PropertyValuesConfiguration {
     }
 
     public boolean isWhiteListed(String url) {
-        return authWhitelist.contains(url);
+        return authWhitelist.stream()
+                .anyMatch(s -> {
+                    String requestedUrl = url.substring(1);
+                    String testUrl = "";
+
+                    if (requestedUrl.contains("/")) {
+                        String[] endpoints = requestedUrl.split("/");
+
+                        if (endpoints.length > 1 && endpoints[0].equalsIgnoreCase("authorization")) {
+                            testUrl = endpoints[1];
+                        }
+                    } else {
+                        testUrl = url;
+                    }
+
+                    return s.contains(testUrl);
+                });
     }
 }

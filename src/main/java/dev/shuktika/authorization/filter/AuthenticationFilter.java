@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.shuktika.authorization.config.PropertyValuesConfiguration;
 import dev.shuktika.authorization.exception.BadRequestException;
+import dev.shuktika.authorization.exception.InvalidJWTException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -77,5 +79,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             new ObjectMapper().writeValue(response.getOutputStream(), tokenValue);
         }
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        var errMsg = String.format("AuthenticationFilter.unsuccessfulAuthentication(HttpServletRequest, HttpServletResponse, AuthenticationException): Authentication failure %s", failed.getMessage());
+        throw new InvalidJWTException(errMsg);
     }
 }

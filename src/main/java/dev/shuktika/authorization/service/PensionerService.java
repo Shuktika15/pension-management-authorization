@@ -17,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +41,7 @@ public class PensionerService implements UserDetailsService {
         } else {
             username = principal.toString();
         }
+
         var pensioner = pensionerRepository.findById(Long.valueOf(username))
                 .orElseThrow(() -> {
                     var errorMsg = String.format("PensionerService.getPensioner () :" +
@@ -50,6 +49,7 @@ public class PensionerService implements UserDetailsService {
                     log.error(errorMsg);
                     return new UsernameNotFoundException(errorMsg);
                 });
+
         Long aadharNumber = pensioner.getAadharNumber();
         ResponseEntity<PensionerDetails> pensionerResponseEntity = pensionerClient.getPensioner(aadharNumber);
         PensionerDetails pensionerDetails = null;
@@ -68,17 +68,9 @@ public class PensionerService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return pensionerRepository.findById(Long.parseLong(username)).orElseThrow(() -> {
-            String errMsg = String.format("Pensioner with Aadhar Number %s not found", username);
+            var errMsg = String.format("Pensioner with Aadhar Number %s not found", username);
             log.error(errMsg);
             return new UsernameNotFoundException(errMsg);
         });
-    }
-
-    public List<Pensioner> addPensioners(List<Pensioner> pensioners) {
-        return pensionerRepository.saveAllAndFlush(
-                pensioners.stream()
-                        .peek(pensioner -> pensioner.setPassword(passwordEncoder.encode(pensioner.getPassword())))
-                        .collect(Collectors.toList())
-        );
     }
 }

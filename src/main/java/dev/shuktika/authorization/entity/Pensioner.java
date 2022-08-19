@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Data
@@ -23,7 +24,7 @@ public class Pensioner implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

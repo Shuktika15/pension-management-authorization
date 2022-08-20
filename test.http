@@ -12,6 +12,9 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzQxNTEyM
 ### Get /
 GET http://localhost:8002
 
+### Health check
+GET http://localhost:8002/actuator/health
+
 ### Post Pensioners
 POST http://localhost:8002/authorization/pensioners
 Content-Type: application/json

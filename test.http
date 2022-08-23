@@ -15,6 +15,20 @@ GET http://localhost:8002
 ### Health check
 GET http://localhost:8002/actuator/health
 
+### AWS Login Test
+POST http://shuktika-authorization-lb1-508349742.ap-south-1.elb.amazonaws.com/authorization/login
+Content-Type: application/x-www-form-urlencoded
+
+aadharNumber=234151234234&password=Jhinuk@151
+
+### AWS Authentiction Test
+GET http://shuktika-authorization-lb1-508349742.ap-south-1.elb.amazonaws.com/authorization/authenticate
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMzQxNTEyMzQyMzQiLCJleHAiOjE2NjEwOTM3ODUsImlhdCI6MTY2MTA5MTk4NX0.uwUU3Ju4EjwbgsnDmdVdXUCNR8nowqWn_ssl0dB8Xs4uH-fc6aSt7aX0ZddkCmjJ4XMERoOz_g3nBozkDv92Ow
+
+### AWS Health check Test
+GET http://shuktika-authorization-lb1-508349742.ap-south-1.elb.amazonaws.com/actuator/health
+
 ### Post Pensioners
 POST http://localhost:8002/authorization/pensioners
 Content-Type: application/json
